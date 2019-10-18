@@ -1,0 +1,88 @@
+//bracket checker using self put stack c++
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+// stack by linked list
+struct Node { 
+   int data; 
+   Node *next; 
+}; 
+Node* top = NULL; 
+void push(char val) {
+   Node* newnode = new Node; 
+   newnode->data = val; 
+   newnode->next = top; 
+   top = newnode;
+}
+char pop() {
+      if(top==NULL)
+      return 1;
+	  char op=top->data;
+      top = top->next;
+   return op;
+}
+// bracket checker
+bool check(string exp)
+{
+	int i=0;
+	int option;
+	for(i=0;i<exp.length();i++)
+	{
+		if(exp[i]=='('||exp[i]=='{'||exp[i]=='[') //takes opening and push to stack
+		{
+			push(exp[i]);
+			continue;
+		}
+		
+		else if(exp[i]=='}'||exp[i]==')'||exp[i]==']')//compares with closing
+		{
+			option=pop();
+			if(option==1)return false;
+			switch(exp[i])
+			{
+			case ')':
+			if(option=='{'||option=='[')return false;
+			break;
+			case '}':
+			if(option=='('||option=='[')return false;
+			break;
+			case ']':
+				if(option=='{'||option=='(')return false;
+			break;
+			default:
+			return false;
+		}
+		}		
+	}	
+	
+	
+	//empty case
+	if(exp.empty())
+	{
+		cout<<"empty"<<endl;
+		return false;
+	}
+	
+	if(i==exp.length()){
+	//extra case
+	option=pop();
+	if(option=='('||option=='{'||option=='['){
+	return false;}}
+	return true;
+}
+
+
+int main() {
+	int pos=2,i=0;
+		bool result;
+		string exp,line;
+		ifstream read;
+		read.open("inline.cpp");
+		while (!read.eof()){
+		getline(read,line,'\n');
+		result=check(line);
+		}
+		if(result==true)cout<<"balanced"<<endl;
+		else cout<<"not balanced"<<endl;
+      return 0;}
