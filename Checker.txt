@@ -1,4 +1,4 @@
-        //created by abdul samad
+        //created by abdul samad baby
 	//uetiean 2018 session
 //bracket checker using self put stack c++
 #include <iostream>
