@@ -59,32 +59,15 @@ bool check(string exp)
 	}	
 	
 	
-	//empty case
-	if(exp.empty())
-	{
-		cout<<"empty"<<endl;
-		return false;
-	}
-	
-	if(i==exp.length()){
-	//extra case
-	option=pop();
-	if(option=='('||option=='{'||option=='['){
-	return false;}}
-	return true;
 }
 
 
 int main() {
 	int pos=2,i=0;
 		bool result;
-		string exp,line;
-		ifstream read;
-		read.open("inline.cpp");
-		while (!read.eof()){
-		getline(read,line,'\n');
-		result=check(line);
+		result=check("{}{}{}{}");
 		}
 		if(result==true)cout<<"balanced"<<endl;
 		else cout<<"not balanced"<<endl;
-      return 0;}
+      return 0;
+}
