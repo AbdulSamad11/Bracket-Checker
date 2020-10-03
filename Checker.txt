@@ -1,79 +1,197 @@
-        //created by abdul samad baby
-	//uetiean 2018 session
-//bracket checker using self put stack c++
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std;
-// stack by linked list
-struct Node { 
-   int data; 
-   Node *next; 
-}; 
-Node* top = NULL; 
-void push(char val) {
-   Node* newnode = new Node; 
-   newnode->data = val; 
-   newnode->next = top; 
-   top = newnode;
-}
-char pop() {
-      if(top==NULL)
-      return 1;
-	  char op=top->data;
-      top = top->next;
-   return op;
-}
-// bracket checker
-bool check(string exp)
+
+class Node {
+public:
+	int data;
+	Node* next;
+};
+
+class stack {		// stack by linked list   		
+	Node* head = NULL;
+public:
+	void push(char);
+	char pop();
+}s;
+
+class Errors
 {
-	int i=0;
-	int option;
-	for(i=0;i<exp.length();i++)
+public:
+	bool opening_Paranthesis_Error(int, string, int[]);
+	bool closing_Paranthesis_Error(char, int[]);
+	bool empty(string exp);
+}e;
+
+class inPair {
+public:
+	bool if_Pair(string, int[], char&);
+
+}p;
+
+// bracket checker
+class bracket_Checker {
+public:
+	bool balanced_Paranthesis_check(string exp, int arr[])
 	{
-		if(exp[i]=='('||exp[i]=='{'||exp[i]=='[') //takes opening and push to stack
-		{
-			push(exp[i]);
-			continue;
-		}
-		
-		else if(exp[i]=='}'||exp[i]==')'||exp[i]==']')//compares with closing
-		{
-			option=pop();
-			if(option==1)return false;
-			switch(exp[i])
-			{
-			case ')':
-			if(option=='{'||option=='[')return false;
-			break;
-			case '}':
-			if(option=='('||option=='[')return false;
-			break;
-			case ']':
-				if(option=='{'||option=='(')return false;
-			break;
-			default:
-			return false;
-		}
-		}		
-	}	
-	
-	
-	//empty case
-	if(exp.empty())
-	{
-		cout<<"empty"<<endl;
-		return false;
+		char value;
+		if (e.empty(exp))return false;						 //empty case
+
+		if (!p.if_Pair(exp, arr, value))return false; 		//in correct pair
+
+		return e.closing_Paranthesis_Error(value, arr); 	//extra case
+
+		return true;											//worked fine
 	}
-	
-	if(i==exp.length()){
-	//extra case
-	option=pop();
-	if(option=='('||option=='{'||option=='['){
-	return false;}}
-	return true;
+}b;
+
+
+int main()
+{
+	int arr[100];
+	int n = 0, j = 0;
+	string line, exp;
+	ifstream read;
+	read.open("c:/d/inline1.cpp");
+	while (!read.eof()) {
+		getline(read, line, '\n');
+		n++;
+		for (int i = 0; i < line.length(); i++)
+			if (line[i] == '{' || line[i] == '}' || line[i] == '(' || line[i] == ')' || line[i] == '[' || line[i] == ']')
+			{
+				exp += line[i];
+				arr[j] = n;
+				j++;
+			}
+	}
+		for (int k = 0; k < j; k++)
+		read.close();
+	if (b.balanced_Paranthesis_check(exp, arr))cout << "Result:-\n\tbalanced" << endl;
+	else cout << "\nResult:-\n\tNot balanced" << endl;
+	system("pause");
+	return 0;
 }
 
+
+bool inPair::if_Pair(string exp, int arr[], char& value)
+{
+	int i = 0, j = 0;
+	string seq;
+	for (i = 0; i < exp.length(); i++)
+	{
+		if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[') 		//takes opening and push to stack
+		{
+			s.push(exp[i]);
+			continue;
+		}
+
+		else if (exp[i] == '}' || exp[i] == ')' || exp[i] == ']')	//compares with closing
+		{
+
+
+			value = s.pop();
+			if (value == 'h')		//no matching
+				return e.opening_Paranthesis_Error(i, exp, arr);
+			switch (exp[i])
+			{
+			case ')':
+				if (value == '{' || value == '[')
+				{
+					cout << "invalid presence of " << exp[i];
+					return false;
+				}
+				j = i;
+				arr[j] = 0;
+				while (arr[j - 1] == 0 && j > 0)
+					j--;
+				arr[j - 1] = 0;
+				break;
+
+			case '}':
+				if (value == '(' || value == '[')
+				{
+					return false;
+				}
+				j = i;
+				arr[j] = 0;
+				while (arr[j - 1] == 0 && j > 0)
+					j--;
+				arr[j - 1] = 0;
+				break;
+
+			case ']':
+				if (value == '{' || value == '(')
+				{
+					return false;
+				}
+				//arr=passIndex(arr,i);
+				j = i;
+				arr[j] = 0;
+				while (arr[j - 1] == 0 && j > 0)
+					j--;
+				arr[j - 1] = 0;
+				break;
+			}
+		}
+	}		return true;
+}
+
+void stack::push(char val) {
+	Node* newnode = new Node;
+	newnode->data = val;
+	newnode->next = head;
+	head = newnode;
+}
+char stack::pop() {
+	if (head == NULL)
+		return 'h';
+	char op = head->data;
+	head = head->next;
+	return op;
+}
+
+bool Errors::opening_Paranthesis_Error(int i, string exp, int arr[])
+{
+	while (exp[i] == '}' || exp[i] == ')' || exp[i] == ']') {
+		cout << " extra " << exp[i] << " at line number " << arr[i] << endl;
+		i++;
+	}
+	return false;
+}
+
+bool Errors::closing_Paranthesis_Error(char value, int arr[]) {
+
+	value = s.pop();
+
+	int j = 0;
+	while (value == '(' || value == '{' || value == '[') {
+		while (arr[j] == 0)j++;
+		cout << "At line '" << arr[j++] << "' no matching found for: ";
+		cout << value << endl;
+		value = s.pop();
+		if (value == 'h') return false;
+
+		else cout << "AGAIN for another ";
+	}
+}
+
+bool Errors::empty(string exp)
+{
+	if (exp.empty()) {
+		cout << "empty" << endl;
+		return true;
+	}
+	return false;
+}
+
+
+
+/*
+Owner
+	  Abdul Samad
+	  2018-cs-101
+*/
 
 int main() {
 
@@ -89,14 +207,16 @@ int main() {
 		getline(read,line,'\n');
 		result=check(line);
 		}
-		if(result==true){ cout<<"\t\t\t*****************************************"<<endl;
+		if(result==true){ 
+               cout<<"\t\t\t*****************************************"<<endl;
                cout<<"\t\t\t\t Balanced"<<endl;
                cout<<"\t\t\t*****************************************"<<endl;
 }
 
 		else{
- cout<<"\t\t\t*****************************************"<<endl;
+               cout<<"\t\t\t*****************************************"<<endl;
                cout<<"\t\t\t\t Not Balanced"<<endl;
                cout<<"\t\t\t*****************************************"<<endl;
 } 
-      return 0;}
+      return 0;
+      }
