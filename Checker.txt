@@ -76,6 +76,10 @@ bool check(string exp)
 
 
 int main() {
+
+               cout<<"\t\t\t*****************************************"<<endl;
+               cout<<"\t\t\t\t Bracket Checker Program in C++"<<endl;
+               cout<<"\t\t\t*****************************************"<<endl;
 	int pos=2,i=0;
 		bool result;
 		string exp,line;
@@ -85,6 +89,14 @@ int main() {
 		getline(read,line,'\n');
 		result=check(line);
 		}
-		if(result==true)cout<<"balanced"<<endl;
-		else cout<<"not balanced"<<endl;
+		if(result==true){ cout<<"\t\t\t*****************************************"<<endl;
+               cout<<"\t\t\t\t Balanced"<<endl;
+               cout<<"\t\t\t*****************************************"<<endl;
+}
+
+		else{
+ cout<<"\t\t\t*****************************************"<<endl;
+               cout<<"\t\t\t\t Not Balanced"<<endl;
+               cout<<"\t\t\t*****************************************"<<endl;
+} 
       return 0;}
