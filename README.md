@@ -1,5 +1,5 @@
 # Bracket-Checker
-Balanced paranthesis (round, curly and square) checker implemended in c++
+Balanced paranthesis (round, curly and square) checker implemended in C++ for a first year project
 
 
 Spell CorrectorSpell correctors can work in various ways.  In our version of a spell corrector, 
